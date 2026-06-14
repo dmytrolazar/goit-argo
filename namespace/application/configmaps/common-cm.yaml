@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: common-cm
+ namespace: application
+data:
+ ping: pong
