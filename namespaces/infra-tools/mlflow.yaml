@@ -24,7 +24,7 @@ spec:
           enabled: false
 
         # ✅ Отримуємо всі параметри безпечно з раніше створеного Secret (наприклад, mlflow-secret)
-        extraEnv:
+        extraEnvVars:
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
