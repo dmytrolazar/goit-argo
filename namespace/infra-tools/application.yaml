@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mlflow
+  namespace: infra-tools # Неймспейс, де встановлено ArgoCD
+spec:
+  project: default
+  source:
+    # Офіційний (community) репозиторій Helm-чартів, де є MLflow
+    repoURL: 'https://community-charts.github.io/helm-charts'
+    chart: mlflow
+    targetRevision: 0.7.1 # Версія чарту (можна змінити на актуальну)
+    helm:
+      # Тут ми перевизначаємо values для Helm-чарту (як вимагає завдання)
+      values: |
+        service:
+          type: ClusterIP
+          port: 5000
+        # За потреби тут можна додати конфігурацію бази даних чи S3 для MLflow
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: application # Цільовий неймспейс для MLflow
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
