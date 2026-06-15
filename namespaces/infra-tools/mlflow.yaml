@@ -9,6 +9,7 @@ spec:
     repoURL: https://community-charts.github.io/helm-charts
     chart: mlflow
     targetRevision: 1.6.2
+    
     helm:
       releaseName: mlflow
       valuesObject:
@@ -18,7 +19,7 @@ spec:
         auth:
           enabled: false
           
-        # ВИМИКАЄМО СТАРУ БАЗУ
+        # Цей блок має бути з такими ж відступами, як service та auth
         postgresql:
           enabled: false
 
