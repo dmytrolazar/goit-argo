@@ -2,12 +2,12 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: loki
-  namespace: infra-tools # ✅ ТЕПЕР ARGOCD ЙОГО ПОБАЧИТЬ
+  namespace: infra-tools
 spec:
   destination:
     namespace: infra-tools
     server: "https://kubernetes.default.svc"
-  project: default # ✅ ВИКОРИСТОВУЄМО СТАНДАРТНИЙ ПРОЄКТ
+  project: default
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: loki-stack
