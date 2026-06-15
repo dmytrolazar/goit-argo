@@ -1,44 +1,42 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
- name: mlflow
- namespace: infra-tools
+  name: mlflow
+  namespace: infra-tools
 spec:
- project: default
- source:
-  repoURL: https://community-charts.github.io/helm-charts
-  chart: mlflow
-  targetRevision: 1.6.2
-  helm:
-   releaseName: mlflow
-   valuesObject:
-    service:
-     type: ClusterIP
-     port: 5000
+  project: default
+  source:
+    repoURL: https://community-charts.github.io/helm-charts
+    chart: mlflow
+    targetRevision: 1.6.2
+    helm:
+      releaseName: mlflow
+      valuesObject:
+        service:
+          type: ClusterIP
+          port: 5000
+        auth:
+          enabled: false
+          
+        # ВИМИКАЄМО СТАРУ БАЗУ
+        postgresql:
+          enabled: false
 
-    auth:
-     enabled: false
-
-    postgresql:
-     enabled: true
-     primary:
-      persistence:
-       enabled: false
-     auth:
-      postgresPassword: mlflowpass
-      username: mlflow
-      password: mlflowpass
-      database: mlflowdb
-
- destination:
-  namespace: application
-  server: https://kubernetes.default.svc
-
- syncPolicy:
-  automated:
-   prune: true
-   selfHeal: true
-  syncOptions:
-   - ServerSideApply=true
-   - SkipDryRunOnMissingResource=true
-   - CreateNamespace=true # ✅ Додаємо цей рядок
+        # ПІДКЛЮЧАЄМО НОВУ ЧЕРЕЗ СЕКРЕТ
+        extraEnv:
+          - name: MLFLOW_BACKEND_STORE_URI
+            valueFrom:
+              secretKeyRef:
+                name: mlflow-db-secret
+                key: MLFLOW_BACKEND_STORE_URI
+  destination:
+    namespace: application
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true
