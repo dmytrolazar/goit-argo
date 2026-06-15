@@ -44,9 +44,26 @@ spec:
             forceEnableClusterMode: true
             configSecret: alertmanager-secret
         grafana:
+          sidecar:
+            datasources:
+              enabled: true                # увімкнули sidecar, щоб він міг підхоплювати datasources
+              defaultDatasourceEnabled: false  # вимкнули автогенерацію дефолтного Prometheus, щоб уникнути конфліктів
           ingress:
             enabled: false
           adminPassword: prom-operator
+          additionalDataSources:
+            - name: Prometheus
+              type: prometheus
+              uid: prometheus              # фіксований UID, щоб дашборди не «ламались» після перестворення
+              url: http://prometheus-operator-prometheus.infra-tools:9090
+              access: proxy
+              isDefault: true              # Prometheus залишаємо дефолтним
+            - name: Loki
+              type: loki
+              uid: loki                    # фіксований UID для стабільності
+              url: http://loki.infra-tools:3100
+              access: proxy
+              isDefault: false             # Loki не дефолтний, додається як додаткове джерело
         prometheusOperator:
           admissionWebhooks:
             enabled: false
