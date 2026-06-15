@@ -18,17 +18,18 @@ spec:
         auth:
           enabled: false
           
-        # 1. Вимикаємо стару базу
+        # Вимикаємо стару базу
         postgresql:
           enabled: false
 
-        # 2. Передаємо URL нової бази через секрет
-        extraEnv:
-          - name: MLFLOW_BACKEND_STORE_URI
-            valueFrom:
-              secretKeyRef:
-                name: mlflow-db-secret
-                key: MLFLOW_BACKEND_STORE_URI
+        # ✅ ОФІЦІЙНИЙ СПОСІБ: Вказуємо зовнішню БД
+        backendStore:
+          postgres:
+            host: "mlflow-postgres-postgresql.application.svc.cluster.local"
+            port: 5432
+            user: "mlflow"
+            password: "mlflowpass"
+            database: "mlflow"
 
   destination:
     namespace: application
