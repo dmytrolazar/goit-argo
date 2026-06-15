@@ -41,3 +41,4 @@ spec:
   syncOptions:
    - ServerSideApply=true
    - SkipDryRunOnMissingResource=true
+   - CreateNamespace=true # ✅ Додаємо цей рядок
