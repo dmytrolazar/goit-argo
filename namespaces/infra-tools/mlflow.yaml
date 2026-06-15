@@ -9,7 +9,6 @@ spec:
     repoURL: https://community-charts.github.io/helm-charts
     chart: mlflow
     targetRevision: 1.6.2
-    
     helm:
       releaseName: mlflow
       valuesObject:
@@ -19,17 +18,18 @@ spec:
         auth:
           enabled: false
           
-        # Цей блок має бути з такими ж відступами, як service та auth
+        # 1. Вимикаємо стару базу
         postgresql:
           enabled: false
 
-        # ПІДКЛЮЧАЄМО НОВУ ЧЕРЕЗ СЕКРЕТ
+        # 2. Передаємо URL нової бази через секрет
         extraEnv:
           - name: MLFLOW_BACKEND_STORE_URI
             valueFrom:
               secretKeyRef:
                 name: mlflow-db-secret
                 key: MLFLOW_BACKEND_STORE_URI
+
   destination:
     namespace: application
     server: https://kubernetes.default.svc
