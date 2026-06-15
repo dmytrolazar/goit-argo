@@ -15,7 +15,7 @@ spec:
     helm:
       valuesObject:
         image:
-          tag: "15" # ✅ Примусово вказуємо існуючий тег Postgres
+          repository: bitnamilegacy/postgresql # ✅ Спрямовуємо в архів Bitnami
         auth:
           username: mlflow
           password: mlflowpass

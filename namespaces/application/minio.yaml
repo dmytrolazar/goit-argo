@@ -15,7 +15,7 @@ spec:
     helm:
       valuesObject:
         image:
-          tag: "latest" # ✅ Примусово вказуємо найсвіжіший тег MinIO
+          repository: bitnamilegacy/minio # ✅ Спрямовуємо в архів Bitnami
         auth:
           rootUser: minio
           rootPassword: minio123
